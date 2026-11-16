@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monetær</title>
+<meta name="theme-color" content="#FAFAF7">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Monetær">
+<style>
+  html, body { margin: 0; height: 100%; background: #E9EBE7; color: #17201D; font: 15px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+  main { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+  img { width: 72px; height: 72px; border-radius: 16px; }
+  a { color: #17201D; }
+</style>
+</head>
+<body>
+<main>
+  <img src="icon-192.png" alt="">
+  <a id="go" href="#">Monetær öffnen</a>
+</main>
+<script>
+  // Startseite fürs Handy: trägt das Symbol, leitet sofort zur App weiter (ohne Eintrag im Verlauf).
+  var APP = 'APP_URL';
+  document.getElementById('go').href = APP;
+  if (APP.indexOf('https://') === 0) location.replace(APP);
+</script>
+</body>
+</html>
