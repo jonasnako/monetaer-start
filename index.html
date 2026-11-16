@@ -4,35 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Monetær</title>
-<meta name="theme-color" content="#FAFAF7">
+<meta name="theme-color" content="#17201D">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-title" content="Monetær">
 <style>
   html, body { margin: 0; height: 100%; background: #E9EBE7; color: #17201D; font: 15px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; }
-  main { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
-  img { width: 72px; height: 72px; border-radius: 16px; }
-  a { color: #17201D; }
+  main { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 0 24px; box-sizing: border-box; text-align: center; }
+  img { width: 72px; height: 72px; border-radius: 50%; }
+  a { color: inherit; }
+  p { margin: 0; max-width: 320px; }
 </style>
 </head>
 <body>
 <main>
   <img src="icon-192.png" alt="">
-  <p id="hint" hidden style="max-width:300px;text-align:center;margin:0">Jetzt im Browsermenü <b>Zum Startbildschirm hinzufügen</b> wählen.<br><span id="sec">30</span> Sekunden bis zur App.</p>
+  <p id="hint" hidden></p>
   <a id="go" href="#">Monetær öffnen</a>
 </main>
 <script>
-  // Startseite fürs Handy: trägt das Symbol und leitet zur App weiter (ohne Eintrag im Verlauf).
-  // Vom Startbildschirm (Adresse mit «?start») sofort; direkt aufgerufen 30 Sekunden Zeit zum Hinzufügen.
+  // Startseite fürs Handy: trägt das Symbol und leitet sofort zur App weiter (ohne Eintrag im Verlauf).
+  // Mit «?einrichten» bleibt sie stehen, damit man sie in Ruhe zum Startbildschirm hinzufügen kann.
   var APP = 'https://script.google.com/macros/s/AKfycbyrbUNAWYWWmsP0nRk9UFYftKVLdGdgOhGYTk6aMK6N1VQKI6lQr5PanXVcK7kErjkf/exec';
   document.getElementById('go').href = APP;
-  if (/[?&]start\b/.test(location.search)) location.replace(APP);
-  else {
-    try { history.replaceState(null, '', '?start'); } catch (e) { /* dann eben ohne */ }   // die Verknüpfung merkt sich «?start»
-    document.getElementById('hint').hidden = false;
-    var n = 30, t = setInterval(function () { n--; document.getElementById('sec').textContent = n; if (n <= 0) { clearInterval(t); location.replace(APP); } }, 1000);
-  }
+  if (/[?&]einrichten\b/.test(location.search)) {
+    try { history.replaceState(null, '', location.pathname); } catch (e) { /* egal */ }   // die Verknüpfung merkt sich die Adresse ohne «einrichten»
+    var h = document.getElementById('hint'); h.hidden = false;
+    h.innerHTML = 'Im Browsermenü <b>App installieren</b> oder <b>Zum Startbildschirm hinzufügen</b> wählen.';
+  } else location.replace(APP);
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () { /* nur für «Installieren» */ });
 </script>
 </body>
 </html>

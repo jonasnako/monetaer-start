@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Haushalt</title>
+<meta name="theme-color" content="#FAFAF7">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Haushalt">
+<style>
+  html, body { margin: 0; height: 100%; background: #FAFAF7; color: #17201D; font: 15px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+  main { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 0 24px; box-sizing: border-box; text-align: center; }
+  img { width: 72px; height: 72px; border-radius: 50%; }
+  a { color: inherit; }
+  p { margin: 0; max-width: 320px; }
+</style>
+</head>
+<body>
+<main>
+  <img src="icon-192.png" alt="">
+  <p id="hint" hidden></p>
+  <a id="go" href="#">Haushalt öffnen</a>
+</main>
+<script>
+  // Haushalt: der Zugangscode kommt nur über den geteilten Link (#k=…) und bleibt auf diesem Gerät – nie auf GitHub.
+  var APP = 'https://script.google.com/macros/s/AKfycbx1-QG3ETpLjMLXFR-X9li7h1kbaZYl-iW0Rmzpjp7JulprTHRKEqoWdngHvm2pbgTNAA/exec', k = '';
+  var m = location.hash.match(/k=([^&]+)/);
+  try { if (m) localStorage.setItem('hhk', decodeURIComponent(m[1])); k = localStorage.getItem('hhk') || ''; } catch (e) { k = m ? decodeURIComponent(m[1]) : ''; }
+  var url = APP + '?k=' + encodeURIComponent(k), h = document.getElementById('hint');
+  document.getElementById('go').href = url;
+  if (!k) { h.hidden = false; h.textContent = 'Bitte einmal den vollständigen Link öffnen, den du bekommen hast.'; document.getElementById('go').hidden = true; }
+  else if (/[?&]einrichten\b/.test(location.search) || m) {
+    try { history.replaceState(null, '', location.pathname); } catch (e) { /* egal */ }   // Code nicht in der Adresse stehen lassen
+    h.hidden = false; h.innerHTML = 'Im Browsermenü <b>App installieren</b> oder <b>Zum Startbildschirm hinzufügen</b> wählen. Danach öffnet das Symbol direkt den Haushalt.';
+  } else location.replace(url);
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () { /* nur für «Installieren» */ });
+</script>
+</body>
+</html>
