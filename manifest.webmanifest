@@ -1,7 +1,7 @@
 {
   "name": "Monetær",
   "short_name": "Monetær",
-  "start_url": "./",
+  "start_url": "./?start",
   "scope": "./",
   "display": "browser",
   "background_color": "#E9EBE7",

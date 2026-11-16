@@ -19,13 +19,20 @@
 <body>
 <main>
   <img src="icon-192.png" alt="">
+  <p id="hint" hidden style="max-width:300px;text-align:center;margin:0">Jetzt im Browsermenü <b>Zum Startbildschirm hinzufügen</b> wählen.<br><span id="sec">30</span> Sekunden bis zur App.</p>
   <a id="go" href="#">Monetær öffnen</a>
 </main>
 <script>
-  // Startseite fürs Handy: trägt das Symbol, leitet sofort zur App weiter (ohne Eintrag im Verlauf).
+  // Startseite fürs Handy: trägt das Symbol und leitet zur App weiter (ohne Eintrag im Verlauf).
+  // Vom Startbildschirm (Adresse mit «?start») sofort; direkt aufgerufen 30 Sekunden Zeit zum Hinzufügen.
   var APP = 'https://script.google.com/macros/s/AKfycbyrbUNAWYWWmsP0nRk9UFYftKVLdGdgOhGYTk6aMK6N1VQKI6lQr5PanXVcK7kErjkf/exec';
   document.getElementById('go').href = APP;
-  if (APP.indexOf('https://') === 0) location.replace(APP);
+  if (/[?&]start\b/.test(location.search)) location.replace(APP);
+  else {
+    try { history.replaceState(null, '', '?start'); } catch (e) { /* dann eben ohne */ }   // die Verknüpfung merkt sich «?start»
+    document.getElementById('hint').hidden = false;
+    var n = 30, t = setInterval(function () { n--; document.getElementById('sec').textContent = n; if (n <= 0) { clearInterval(t); location.replace(APP); } }, 1000);
+  }
 </script>
 </body>
 </html>
