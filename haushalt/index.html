@@ -2,6 +2,13 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
+<script>
+  // Vom Startbildschirm (ohne Code in der Adresse): sofort weiter, noch bevor die Seite gezeichnet wird
+  (function () { var k = ''; try { k = localStorage.getItem('hhk') || ''; } catch (e) { /* dann unten */ }
+    if (k && !/k=/.test(location.hash) && !/[?&]einrichten\b/.test(location.search)) location.replace('https://script.google.com/macros/s/AKfycbx1-QG3ETpLjMLXFR-X9li7h1kbaZYl-iW0Rmzpjp7JulprTHRKEqoWdngHvm2pbgTNAA/exec?k=' + encodeURIComponent(k)); })();
+</script>
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://script.googleusercontent.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Haushalt</title>
 <meta name="theme-color" content="#FAFAF7">
